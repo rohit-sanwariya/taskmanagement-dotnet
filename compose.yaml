@@ -1,0 +1,66 @@
+
+services:
+  taskmanagement-postgres-db:
+    image: postgres:latest
+    container_name: taskmanagement-postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_DB: taskmanagementdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+
+  taskmanagement-webapi:
+    build: 
+      context: .
+      dockerfile: taskmanagement.API/Dockerfile
+    container_name: taskmanagement-webapi
+    ports:
+      - "5165:5165"
+      - "7280:7280"
+    depends_on:
+      - taskmanagement-postgres-db
+    environment:
+      DATABASE_URL: postgres://postgres:postgres_password@taskmanagement-postgres-db:5432/taskmanagementdb
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 5165
+      ASPNETCORE_HTTPS_PORTS: 7280
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+# services:
+#   taskmanagement-postgres-db:
+#     image: postgres:latest
+#     container_name: taskmanagement-postgres-db
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres_password
+#       POSTGRES_DB: taskmanagementdb
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+#     restart: always
+
+#   taskmanagement-webapi:
+#     container_name: taskmanagement-webapi
+#     build:
+#       context: .
+#       dockerfile: taskmanagement.API/Dockerfile
+#     ports:
+#       - "8080:5165"
+#     environment:
+#       ASPNETCORE_ENVIRONMENT: Development
+#       ConnectionStrings__DefaultConnection: Host=taskmanagement-postgres-db;Port=5432;Database=taskmanagementdb;Username=postgres;Password=postgres_password;
+#     depends_on:
+#       - taskmanagement-postgres-db
+#     networks:
+#       - app-network
+
+volumes:
+  postgres_data: {}
+
+networks:
+  app-network:
+    driver: bridge
