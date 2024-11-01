@@ -21,7 +21,7 @@ This project is a Task Management API built with .NET Core 8 and PostgreSQL. It 
    git clone https://github.com/your-username/task-management-api.git
 ```
 
-```docker
+```bash
 docker-compose up
 
 ```
