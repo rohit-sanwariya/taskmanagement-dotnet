@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using taskmanagement.Core.Models;
-using Task = taskmanagement.Core.Models.Task;
+using taskmanagement.Core.Entities;
+using Task = taskmanagement.Core.Entities.Task;
+
+
 
 namespace taskmanagement.Data.Data
 {

@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace taskmanagement.Core.Models;
+namespace taskmanagement.Core.Entities;
 
 public class User : IdentityUser<int>  
 {

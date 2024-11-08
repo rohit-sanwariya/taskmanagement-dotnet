@@ -1,8 +1,7 @@
 ﻿
 using taskmanagement.Core.Enums;
 using TaskStatus = taskmanagement.Core.Enums.TaskStatus;
-
-namespace taskmanagement.Core.Models;
+namespace taskmanagement.Core.Entities;
 
 public class Task
 {

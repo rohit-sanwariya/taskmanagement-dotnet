@@ -1,6 +1,6 @@
 using taskmanagement.Core.Enums;
 
-namespace taskmanagement.Core.Models;
+namespace taskmanagement.Core.Entities;
 
 
 public class Attachment

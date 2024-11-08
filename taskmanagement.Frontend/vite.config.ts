@@ -17,6 +17,16 @@ export default defineConfig({
     port:5173,
     strictPort:true,
     host:true,
-    origin: "http://0.0.0.0:5173"
-  }
+    origin: "http://0.0.0.0:5173",
+    
+      proxy: {
+          '/api': {
+              target: 'https://localhost:5001', // URL to your ASP.NET Core backend
+              changeOrigin: true,
+              secure: false,
+          },
+      },
+ 
+  },
+
 })

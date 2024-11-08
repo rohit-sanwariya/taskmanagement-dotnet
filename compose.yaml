@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
   taskmanagement-webapi:
     build: 
@@ -22,12 +22,11 @@ services:
     depends_on:
       - taskmanagement-postgres-db
     environment:
-      DATABASE_URL: postgres://postgres:postgres_password@taskmanagement-postgres-db:5432/taskmanagementdb
+      DATABASE_URL: Server=taskmanagement-postgres-db;Port=5432;Database=taskmanagementdb;User Id=postgres;Password=postgres_password;
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 5165
       ASPNETCORE_HTTPS_PORTS: 7280
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+
 
   taskmanagement-frontend:
     build:

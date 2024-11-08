@@ -1,4 +1,4 @@
-namespace taskmanagement.Core.Models;
+namespace taskmanagement.Core.Entities;
 public class Notification
     {
         public int NotificationID { get; set; }

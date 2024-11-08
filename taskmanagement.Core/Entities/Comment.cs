@@ -1,4 +1,4 @@
-namespace taskmanagement.Core.Models;
+namespace taskmanagement.Core.Entities;
 public class Comment
 {
     public int CommentID { get; set; }

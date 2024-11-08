@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+ 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using taskmanagement.Core.Models;
+using taskmanagement.Core.Entities;
 using taskmanagement.Data.Data;
 
 namespace taskmanagement.API.Controllers

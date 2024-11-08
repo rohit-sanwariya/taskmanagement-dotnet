@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using taskmanagement.Core.Models;
+ 
 using taskmanagement.Data.Data;
-using Task = taskmanagement.Core.Models.Task;
+using Task = taskmanagement.Core.Entities.Task;
 
 namespace taskmanagement.API.Controllers
 {

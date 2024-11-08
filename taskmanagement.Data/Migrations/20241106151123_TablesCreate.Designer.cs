@@ -12,8 +12,8 @@ using taskmanagement.Data.Data;
 namespace taskmanagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241031162133_init")]
-    partial class init
+    [Migration("20241106151123_TablesCreate")]
+    partial class TablesCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -157,7 +157,7 @@ namespace taskmanagement.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.Attachment", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.Attachment", b =>
                 {
                     b.Property<int>("AttachmentID")
                         .ValueGeneratedOnAdd()
@@ -192,7 +192,7 @@ namespace taskmanagement.Data.Migrations
                     b.ToTable("Attachments");
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.Comment", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.Comment", b =>
                 {
                     b.Property<int>("CommentID")
                         .ValueGeneratedOnAdd()
@@ -228,7 +228,7 @@ namespace taskmanagement.Data.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.Notification", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.Notification", b =>
                 {
                     b.Property<int>("NotificationID")
                         .ValueGeneratedOnAdd()
@@ -256,7 +256,7 @@ namespace taskmanagement.Data.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.Task", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.Task", b =>
                 {
                     b.Property<int>("TaskID")
                         .ValueGeneratedOnAdd()
@@ -296,7 +296,7 @@ namespace taskmanagement.Data.Migrations
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.Team", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.Team", b =>
                 {
                     b.Property<int>("TeamID")
                         .ValueGeneratedOnAdd()
@@ -322,7 +322,7 @@ namespace taskmanagement.Data.Migrations
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.User", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -418,7 +418,7 @@ namespace taskmanagement.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("taskmanagement.Core.Models.User", null)
+                    b.HasOne("taskmanagement.Core.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -427,7 +427,7 @@ namespace taskmanagement.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("taskmanagement.Core.Models.User", null)
+                    b.HasOne("taskmanagement.Core.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -442,7 +442,7 @@ namespace taskmanagement.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("taskmanagement.Core.Models.User", null)
+                    b.HasOne("taskmanagement.Core.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -451,16 +451,16 @@ namespace taskmanagement.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("taskmanagement.Core.Models.User", null)
+                    b.HasOne("taskmanagement.Core.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.Attachment", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.Attachment", b =>
                 {
-                    b.HasOne("taskmanagement.Core.Models.Task", "Task")
+                    b.HasOne("taskmanagement.Core.Entities.Task", "Task")
                         .WithMany()
                         .HasForeignKey("TaskID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -469,13 +469,13 @@ namespace taskmanagement.Data.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.Comment", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.Comment", b =>
                 {
-                    b.HasOne("taskmanagement.Core.Models.User", "Author")
+                    b.HasOne("taskmanagement.Core.Entities.User", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("taskmanagement.Core.Models.Task", "Task")
+                    b.HasOne("taskmanagement.Core.Entities.Task", "Task")
                         .WithMany()
                         .HasForeignKey("TaskID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -486,9 +486,9 @@ namespace taskmanagement.Data.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.Notification", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.Notification", b =>
                 {
-                    b.HasOne("taskmanagement.Core.Models.User", "User")
+                    b.HasOne("taskmanagement.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -497,9 +497,9 @@ namespace taskmanagement.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.Task", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.Task", b =>
                 {
-                    b.HasOne("taskmanagement.Core.Models.User", "AssignedUser")
+                    b.HasOne("taskmanagement.Core.Entities.User", "AssignedUser")
                         .WithMany()
                         .HasForeignKey("AssignedUserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -508,14 +508,14 @@ namespace taskmanagement.Data.Migrations
                     b.Navigation("AssignedUser");
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.User", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.User", b =>
                 {
-                    b.HasOne("taskmanagement.Core.Models.Team", null)
+                    b.HasOne("taskmanagement.Core.Entities.Team", null)
                         .WithMany("Members")
                         .HasForeignKey("TeamID");
                 });
 
-            modelBuilder.Entity("taskmanagement.Core.Models.Team", b =>
+            modelBuilder.Entity("taskmanagement.Core.Entities.Team", b =>
                 {
                     b.Navigation("Members");
                 });
