@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
@@ -27,7 +28,10 @@ builder.Services.AddTransient<TokenService>();
 builder.Services.AddAutoMapper(
     typeof(UserProfiles)
     );
-
+builder.Configuration.AddJsonFile("env.json", optional: true, reloadOnChange: true);
+builder.Configuration.AddEnvironmentVariables();
+var azureBlobConnectionString = builder.Configuration["AZURE_BLOB_CONNECTION_STRING"];
+builder.Services.AddSingleton(new BlobServiceClient(azureBlobConnectionString));
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

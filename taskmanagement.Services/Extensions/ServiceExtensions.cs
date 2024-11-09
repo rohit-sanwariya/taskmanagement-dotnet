@@ -1,15 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using taskmanagement.Core.Entities;
 using taskmanagement.Data.Data;
-using taskmanagement.Services.Auth;
 using taskmanagement.Services.Contracts;
+using taskmanagement.Services.Services;
 
 
 namespace taskmanagement.Services.Extensions;
@@ -20,6 +14,8 @@ public static class ServiceExtensions
     {
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IAuthService, AuthService>();
+        services.AddSingleton<IContainerService, ContainerService>();
+        services.AddSingleton<IBlobService, BlobService>();
     }
 
     public static void AddDbContextIdentity(this IServiceCollection services)

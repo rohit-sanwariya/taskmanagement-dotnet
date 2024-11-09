@@ -1,7 +1,9 @@
 ﻿
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using taskmanagement.Core.Entities;
 using taskmanagement.Core.Models;
 using taskmanagement.Data.Data;
@@ -11,19 +13,23 @@ using taskmanagement.Services.Auth;
 namespace taskmanagement.API.Controllers;
 
 [Authorize]
+
+
 [Route("api/[controller]")]
 [ApiController]
 public class UsersController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
-    private readonly TokenService _tokenService;
+  
     private readonly IUserService _userService;
+    private readonly IMapper _mapper;
 
-    public UsersController(ApplicationDbContext context,TokenService tokenService,IUserService userService)
+    public UsersController(ApplicationDbContext context, IUserService userService,IMapper mapper)
     {
         _context = context;
-        _tokenService = tokenService;
+       
         _userService = userService;
+        _mapper = mapper;
     }
 
     // GET: api/Users
@@ -31,6 +37,13 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<IEnumerable<UserReadResponse>>> GetUsers()
     {
         var users = await _userService.GetUsersAsync();
+        return Ok(users);
+    }    
+    [HttpGet("loggedinuserdetail")]
+    public async Task<ActionResult<UserReadResponse>> GetLoggeInUserDetail()
+    {
+        var users = await _userService.GetUsersAsync();
+        var userName = HttpContext.User.FindFirstValue(ClaimTypes.Name);
         return Ok(users);
     }
 
@@ -105,6 +118,7 @@ public class UsersController : ControllerBase
 
         return NoContent();
     }
+
 
     private bool UserExists(int id)
     {

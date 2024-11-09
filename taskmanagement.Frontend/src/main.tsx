@@ -8,20 +8,22 @@ import { LoginForm } from '@/components/custom/LoginForm'
 import RegisterForm from '@/components/custom/RegisterForm'
 import App from './App'
 import NotFound from '@/components/layouts/NotFound'
+import ProtectedRoute from './components/custom/ProtectedRoute'
+import RedirectToApp from './components/custom/RedirectToApp'
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/login",
-    element: <LoginForm/>,
+    element: <RedirectToApp><LoginForm/></RedirectToApp>,
   },
   {
     path:'/register',
-    element:<RegisterForm/>
+    element:<RedirectToApp><RegisterForm/></RedirectToApp>,
   },
   {
     path:'/app',
-    element:<App/>
+    element:<ProtectedRoute><App/></ProtectedRoute>
   },
   {
     path:'',

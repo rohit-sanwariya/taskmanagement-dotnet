@@ -6,6 +6,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres_password
       POSTGRES_DB: taskmanagementdb
+      AZURE_BLOB_CONNECTION_STRING: ${AZURE_BLOB_CONNECTION_STRING}
     ports:
       - "5432:5432"
     volumes:
@@ -26,6 +27,8 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 5165
       ASPNETCORE_HTTPS_PORTS: 7280
+    env_file:
+      - taskmanagement.API/.env
 
 
   taskmanagement-frontend:
