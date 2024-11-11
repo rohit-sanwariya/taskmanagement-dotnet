@@ -2,14 +2,11 @@
 using taskmanagement.Data.Data;
 using taskmanagement.Services.Auth;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.BearerToken;
-using Task = taskmanagement.Core.Entities.Task;
+ 
 using AutoMapper;
 using taskmanagement.Core.Models;
-using System.Collections;
+using AutoMapper.QueryableExtensions;
+
 
 namespace taskmanagement.Services
 {
@@ -32,11 +29,18 @@ namespace taskmanagement.Services
             return GetUsersReadResponse(users);
         }
 
+        public async Task<UserReadResponse?>GetUserAsyncFetchAllFields(int id)
+        {           
+            UserReadResponse? user = GetUserReadResponse(await _context.Users.FindAsync(id));
+            return user;
+        }   
         public async Task<UserReadResponse?>GetUserAsync(int id)
-        {
-            User? user = await _context.Users.FindAsync(id);
-            return GetUserReadResponse(user);
-        }
+        {           
+            UserReadResponse? user =  await _context.Users.ProjectTo<UserReadResponse>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(user =>user.Id == id);
+            return user;
+        }   
+        
+   
 
         public async Task<UserReadResponse> UpdateUserAsync(User user)
         {

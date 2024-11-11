@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,16 +36,18 @@ public class AuthService : IAuthService
     }
 
     public async Task<AuthResponse> RegisterAsync(UserRegistrationRequest model)
-    {   User user = _mapper.Map<User>( model );
-        user.PasswordHash = _passwordHasher.HashPassword(user, model.Password);
-        _context.Users.Add(user);
+    {
+        UserTokenInfo user = _mapper.Map<UserTokenInfo>( model );
+        User authuser = _mapper.Map<User>(user);
+        user.PasswordHash = _passwordHasher.HashPassword(authuser, model.Password);
+        _context.Users.Add(authuser);
         await _context.SaveChangesAsync();
         return GenerateAuthResponse(user);
     }
 
  
 
-    private AuthResponse GenerateAuthResponse(User user)
+    private AuthResponse GenerateAuthResponse(UserTokenInfo user)
     {
         var accessToken = GenerateAccessToken(user);
         var refreshToken = GenerateRefreshToken(user);
@@ -57,7 +60,7 @@ public class AuthService : IAuthService
         );
     }
 
-    private string GenerateAccessToken(User user)
+    private string GenerateAccessToken(UserTokenInfo user)
     {
         var claims = new[]
         {
@@ -77,7 +80,7 @@ public class AuthService : IAuthService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private string GenerateRefreshToken(User user)
+    private string GenerateRefreshToken(UserTokenInfo user)
     {
         var bytes = new byte[32];
         using var rng = RandomNumberGenerator.Create();
@@ -87,9 +90,10 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponse> LoginAsync(UserLoginRequest login)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == login.Username);
+        UserTokenInfo user = await _context.Users.ProjectTo<UserTokenInfo>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(u => u.Email == login.Username);
+        User authuser = _mapper.Map<User>(user);
         if (user != null &&
-            _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, login.Password) ==
+            _passwordHasher.VerifyHashedPassword(authuser, user.PasswordHash, login.Password) ==
             PasswordVerificationResult.Success)
         {
             return GenerateAuthResponse(user);

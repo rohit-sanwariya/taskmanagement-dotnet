@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  
   CardFooter,
   CardHeader,
   CardTitle,
@@ -18,7 +17,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { uploadFile } from "@/services/fileService";
- 
+import FileUpload from "./FileUpload";
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState<TUserPayload>({
@@ -29,7 +28,7 @@ const RegisterForm = () => {
     profileImage: "",
     userName: "",
   });
-  const [uploading, setUploading] = useState(false); 
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileRef = createRef<HTMLInputElement>();
   const navigate = useNavigate();
@@ -54,18 +53,19 @@ const RegisterForm = () => {
 
     setUploading(true);
 
-
-
     try {
-      const response = await uploadFile(event.target.files[0],'profilepicture');
+      const response = await uploadFile(
+        event.target.files[0],
+        "profilepicture"
+      );
 
-      setFormData(data=>({...data,profileImage:response.data.uri}))
+      setFormData((data) => ({ ...data, profileImage: response.data.uri }));
       setUploading(false);
     } catch (error) {
       if (error instanceof AxiosError) {
         setError(error.message);
       } else {
-        setError('An unknown error occurred');
+        setError("An unknown error occurred");
       }
       setUploading(false);
     }
@@ -78,7 +78,7 @@ const RegisterForm = () => {
   return (
     <div className="h-screen flex items-center justify-center">
       <form onSubmit={handleSubmit} className="w-3/5">
-        <Card className="w-4/5"  >
+        <Card className="w-4/5">
           <CardHeader>
             <CardTitle>Register Account</CardTitle>
           </CardHeader>
@@ -113,9 +113,14 @@ const RegisterForm = () => {
               onChange={handleChange}
               placeholder="Name"
             />
-        
-            <Input type="file" ref={fileRef} onChange={handleUpload}  />
-            {error && <span>re upload your profile picture</span>}
+
+            <FileUpload
+              containerName="profilepicture"
+              onUploadComplete={(uri) => {
+                setFormData((data) => ({ ...data, profileImage: uri }));
+                setUploading(false);
+              }}
+            />
             <Input
               className="my-4"
               name="phoneNumber"
@@ -124,7 +129,8 @@ const RegisterForm = () => {
               placeholder="Ener Phone Number"
             />
             <div className="flex">
-              <span>Already a user ? </span><Link to="/login">Signin</Link>
+              <span>Already a user ? </span>
+              <Link to="/login">Signin</Link>
             </div>
           </CardContent>
           <CardFooter className="justify-end">
@@ -143,5 +149,3 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
-
-

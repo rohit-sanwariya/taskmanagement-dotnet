@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace taskmanagement.Core.Models
-{
-    public class UserLoginRequest
-    {
-        public required string Username { get; set; }
-        public required string Password { get; set; }
+namespace taskmanagement.Core.Models;
 
-    }
+public class UserLoginRequest
+{
+    public required string Username { get; set; }
+    public required string Password { get; set; }
+
 }

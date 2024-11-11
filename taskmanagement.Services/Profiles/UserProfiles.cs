@@ -11,6 +11,9 @@ public class UserProfiles : Profile
     public UserProfiles()
     {
         CreateMap<UserRegistrationRequest,User>();
+        CreateMap<UserRegistrationRequest, UserTokenInfo>();
         CreateMap<User,UserReadResponse>();
+        CreateMap<User,UserTokenInfo>();
+        CreateMap<UserTokenInfo, User>();
     }
 }

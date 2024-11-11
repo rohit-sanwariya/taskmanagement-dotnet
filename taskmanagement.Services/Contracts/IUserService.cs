@@ -11,6 +11,7 @@ namespace taskmanagement.Services
     {
         Task<IEnumerable<UserReadResponse>> GetUsersAsync();
         Task<UserReadResponse?> GetUserAsync(int id);
+        Task<UserReadResponse?> GetUserAsyncFetchAllFields(int id);
         Task<UserReadResponse> UpdateUserAsync(User user);
         Task<UserReadResponse> CreateUserAsync(User user);
         void DeleteUserAsync(int id);

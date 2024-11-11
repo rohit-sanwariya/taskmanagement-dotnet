@@ -10,6 +10,7 @@ import App from './App'
 import NotFound from '@/components/layouts/NotFound'
 import ProtectedRoute from './components/custom/ProtectedRoute'
 import RedirectToApp from './components/custom/RedirectToApp'
+import Profile from './pages/Profile'
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -23,7 +24,13 @@ const router = createBrowserRouter([
   },
   {
     path:'/app',
-    element:<ProtectedRoute><App/></ProtectedRoute>
+    element:<ProtectedRoute><App/></ProtectedRoute>,
+    children:[
+      {
+        path:'profile',
+        element:<Profile/>
+      }
+    ]
   },
   {
     path:'',

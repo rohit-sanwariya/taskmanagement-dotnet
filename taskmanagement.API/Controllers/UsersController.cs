@@ -42,9 +42,20 @@ public class UsersController : ControllerBase
     [HttpGet("loggedinuserdetail")]
     public async Task<ActionResult<UserReadResponse>> GetLoggeInUserDetail()
     {
-        var users = await _userService.GetUsersAsync();
-        var userName = HttpContext.User.FindFirstValue(ClaimTypes.Name);
-        return Ok(users);
+        
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        try
+        {
+            if (userIdClaim != null)
+            {
+                int id = int.Parse(userIdClaim);
+                return await _userService.GetUserAsync(id);
+            }
+        }
+        catch (Exception ex) {
+            return NotFound(ex.Message);
+        }
+        return NotFound();
     }
 
     // GET: api/Users/5
